@@ -1,1 +1,173 @@
 \\ un programme en java avec d'utilisation d'enum classe\\
+***********************************************************************\\enum Spéciality\\*******************************************************************************
+public enum Specialite {
+Electronique,Informatique,Mecanique,Rien;
+}
+***************************************************************************\\enum Status\\**********************************************************************************
+public enum Statut {
+	Active,Suspendu,Radié,Neant;
+
+}
+****************************************************************\\la classe programme c'est la classe main\\***************************************************************
+import java.time.LocalDate;
+import java.util.Scanner;
+public class Programme {
+
+	public static void main(String[] args) {
+		Scanner sc=new Scanner (System.in);
+		System.out.println("donner un caracter pour vérifier tu n'as pas un robot");
+		String a=sc.next();
+		String p = null;
+		do {
+			System.out.println("enter 1 ou 0 pour choisir entre technicien\0 ou chef_atelier\1");
+			int i = sc.nextInt();
+			switch(i) {
+			case 1:
+				Tp3Technicien tec=new Tp3Technicien("Roumaissa","Achir","achirroumaissa11@gmail.com","roumaissa15","12548Rm",31355520,Specialite.Informatique);
+				tec.affiche();
+			 	 System.out.println("\n"+"Veuillez vous authentifier.");
+			        
+			        if (tec.sauthentifier1()==true) {
+			            System.out.println("Authentification réussie!");
+			        } else {
+			            System.out.println("Echec de l'authentification. Veuillez réessayer.");
+			            if (tec.sauthentifier2()==true) {
+			                System.out.println("Authentification réussie à la seconde tentative !");
+			            } else {
+			                System.out.println("Echec de l'authentification après trois tentatives.");
+			            }
+			        }
+			        System.out.println("donnez un caractere differant de a pour continuer \n");
+					  p = sc.next();
+			        break;
+			case 0:
+			       Tp3chef_atelier  chef = new Tp3chef_atelier("maria","mellah" , "mellahmari@gmail.com" ,"mellah2004","2004marie",1,LocalDate.of(2020,6,20),LocalDate.of(2023,1,5) ,Statut.Active);
+			        chef.affiche();
+				 	 System.out.println("Veuillez vous authentifier.");
+				        
+				        if (chef.sauthentifier1()==true) {
+				            System.out.println("Authentification réussie!");
+				        } else {
+				            System.out.println("Echec de l'authentification. Veuillez réessayer.");
+				            if (chef.sauthentifier2()==true) {
+				                System.out.println("Authentification réussie à la seconde tentative !");
+				            } else {
+				                System.out.println("Echec de l'authentification après trois tentatives.");
+				            }
+				        }
+			  System.out.println( "le nombre d experionce est " + chef.AjourExperience(LocalDate.of(2015, 8, 15)));
+			  System.out.println("donnez un caractere differant de a pour continuer \n");
+			  p = sc.nextLine();
+		break;
+		}
+		}while(p.equals("a"));
+	}
+}
+***************************************************************************\\la classe personne \\***********************************************************************
+import java.util.Scanner;
+public class Tp3Personne {
+String nom;
+   String prenom;
+   String email;
+   String login;
+    protected String password;
+    
+   public Tp3Personne() {}
+   public Tp3Personne (String nom , String prenom , String email , String login ,String password) {
+ 	  this.nom=nom;
+ 	  this.prenom=prenom;
+ 	  this.email=email;
+ 	  this.login=login;
+ 	  this.password=password;
+   }
+   Scanner sc =  new Scanner(System.in);
+   public String toString() {
+ 	  return (nom +"\n"+ prenom +"\n"+ email +"\n"+ login +"\n"+ password);
+   }
+   public  void afficher () {
+ 	  System.out.println("les information de la personne :" + toString());
+   }
+   // methode de la class mere a la class fille super.NomDeLaClass;
+   public boolean sauthentifier1 () {
+ 	  System.out.println("donner le nom d utitisateur et le password");
+ 	  
+ 	    String log =sc.nextLine();
+ 	    String pass = sc.nextLine();
+ 	    
+ 	  if (log.equals(login) && pass.equals(password) ) {
+ 		  return (true);
+ 	  }else 
+ 		  return (false);
+ 	  
+ 	  
+   }
+   public boolean sauthentifier2 () {
+ 	  int ess=0;
+ 	  do {
+ 		  System.out.println("donner le nom d utitisateur et le password");
+ 		  
+ 		    String log =sc.nextLine();
+ 		    String pass = sc.nextLine();
+ 		    
+ 		  if (log.equals(login) && pass.equals(password)) {
+ 			  return (true);
+ 		  }else {
+ 			  System.out.println( "tu n a pas ete authentifier essai une autre fois");
+ 		  ess=ess+1;}
+ 	  }while(ess<3);
+ 	  return (false);
+   }
+   }
+*********************************************************************************\\ la classe technicien\\*******************************************************************
+public class Tp3Technicien extends Tp3Personne {
+	int matricule;
+	Specialite specialite;
+	Tp3Technicien(){
+	}
+	public Tp3Technicien(String nom , String prenom,String email, String login, String password, int mat , Specialite sp){
+		super(nom,prenom,email,login,password);
+		this.matricule= mat ;
+		this.specialite=sp; 
+		
+	}
+	public Tp3Technicien(String string, String string2, String string3) {
+		// TODO Auto-generated constructor stub
+	}
+	public String toString() {
+		return(super.toString()+"\n"+ "le matricule et specialite sont :"+"\n"+matricule+"\n"+specialite);
+		
+	}
+	void affiche() {
+		System.out.print("les information de Technicien sont :"+"\n"+toString());
+	}
+}
+*********************************************************************************\\ la classe chef atelier\\*************************************************************************
+import java.time.Year;
+import java.time.LocalDate;
+public class Tp3chef_atelier extends Tp3Personne {
+int nbExperience;
+ LocalDate dateExp;
+ LocalDate dateprom;
+ Statut statut;
+Tp3chef_atelier(){
+}
+public Tp3chef_atelier(String nom , String prenom,String email, String login, String password, int nbExp ,LocalDate dateExp,LocalDate dateprom,Statut statut ){
+	super(nom,prenom,email,login,password);
+	this.dateExp=dateExp;
+	this.dateprom= dateprom;
+	this.statut=statut;
+	this.nbExperience=nbExp;
+}
+public String toString() {
+	return(super.toString()+"\n "+"le nbrexprience est :"+"\n"+nbExperience+"\n"+dateExp+"\n"+dateprom+"\n"+statut);
+	
+}
+public void affiche() {
+	System.out.print("les information de chef atelier sont "+"\n"+toString());
+}
+public int AjourExperience(LocalDate dateExp) {
+	return(Year.now().getValue()-dateExp.getYear());
+}
+}
+**********************************************************************\\ la fin de tous programme\\*************************************************************************************
+***************************************

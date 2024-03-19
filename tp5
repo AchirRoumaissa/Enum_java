@@ -1,0 +1,289 @@
+************************// tp5 gl langage java //***********************************
+***********************// la classe Fournisseur //***********************************
+package TP5;
+import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Iterator;
+public class Fournisseur {
+	private int numRC;
+	private String raisonSocial;
+	private String adresse;
+	private double capital;
+	private Vector<Equipment> equipments=new Vector<Equipment>();
+	private Iterator<Equipment>it;
+public Fournisseur (int numRC , String raisonSocial ,String adresse, double capital) {
+	this.numRC= numRC;
+	this.raisonSocial= raisonSocial;
+	this.adresse= adresse;
+	this.capital= capital;
+}
+	int getNumRc() {
+		return numRC;
+	}
+	void setNumRC(int numRC) {
+		this.numRC=numRC;
+	}
+	String getRaisonSocial() {
+		return raisonSocial;
+	}
+	void setRaisonSocial(String raisonSocial) {
+		this.raisonSocial= raisonSocial;
+	}
+	String  getAdresse() {
+		return adresse;
+	}
+	void setAdresse(String adresse) {
+		this.adresse= adresse;
+	}
+	double getCapital() {
+		return capital;
+	}
+	void setCapital(double capital) {
+		this.capital= capital;
+	}
+    Vector<Equipment> getEquipment(){
+    	return equipments;
+    }
+    void setEquipment(Vector<Equipment>equipments) {
+    	this.equipments=equipments;
+    }
+    
+    public void supprimerEquipment(Equipment equipment) {
+    	 it = equipments.iterator();
+    	Iterator<Equipment>it =equipments.iterator();
+    	while(it.hasNext()) {
+    		Equipment eq=it.next();
+    		if(eq.equals(equipment)) {
+    			equipments.remove(equipment);
+    		}	
+    	}
+    }
+    public void ajouterEquipment(Equipment equipment) {
+    	if(equipments == null ) {
+    		equipments = new Vector<>();}
+    		equipments.add(equipment);
+    	System.out.println("l'equiment est \n"+"numserie:"+equipment.getNumSerie()+"\n"+"designation:"+equipment.getDesignation()+"\n"+"le prix:"+equipment.getPrix()+"\n"+"type :"+equipment.getType());
+    	}
+    }
+**********************// la classe Réparation //***********************************
+package TP5;
+import java.util.Date;
+import java.util.Iterator;
+import java .util.Vector;
+
+public class Réparation {
+	Iterator<Piece>itp;
+	private Date dateRéparation;
+	private int nombreHeure;
+	private String travaux;
+	private Equipment equipment;
+	private Technicien techinicien;
+	 private Vector<Piece>listePieces =new Vector<Piece>();
+	 int montantTotal=0;
+     double prix=0;
+	public Réparation(Date daterep ,int nbrH ,String travaux) {
+		this.dateRéparation=daterep;
+		this.nombreHeure=nbrH;
+		this.travaux=travaux;
+	}
+	 public Date getDateRep() {
+	        return dateRéparation;
+	    }
+
+	    public int getNbHeure() {
+	        return nombreHeure;
+	    }
+
+	    public String getTravaux() {
+	        return travaux;
+	    }
+	public boolean estRéformable(double prix) {
+		
+		if( prix <10000) {
+		return true;
+	}else {
+		return false;}
+	}
+		public double calculerPrixRep(Equipment equipment) {
+	        double prixTotal=0;
+	        double prix=0;
+	        for (Piece p : listePieces) {
+	            prixTotal += p.getPrix() * p.getQuantite();
+	        }
+	        prix =prixTotal + equipment.getPrix() * nombreHeure;
+	        return prix;
+	    }
+
+	    public void ajouterPiece(int ref, String nom, int quantite, double prix) {
+	    	
+	        listePieces.add(new Piece(ref, nom, quantite,0, prix));
+	    }
+
+	    public void ajouterPiece(Piece p) {
+	        listePieces.add(p);
+	    }
+
+	    public void modifierPiece(int ref, String nom, int quantite, double prix) {
+	        for (Piece piece : listePieces) {
+	            if (piece.getRef() == ref) {
+	                piece.setNom(nom);
+	                piece.setQuantite(quantite);
+	                piece.setPrix(prix);
+	                return;
+	            }
+	        }
+	        System.out.println("Pièce introuvable.");
+	    }
+
+	    public void modifierPiece(Piece p) {
+	        int index = listePieces.indexOf(p);
+	        if (index != -1) {
+	            listePieces.set(index, p);
+	        } else {
+	            System.out.println("Pièce introuvable.");
+	        }
+	    }
+
+	    public void supprimerPiece(int ref) {
+	        for (Piece p : listePieces) {
+	            if (p.getRef() == ref) {
+	                listePieces.remove(p);
+	                return;
+	            }
+	        }
+	        System.out.println("Pièce introuvable.");
+	    }
+
+	    public void afficherListePieces() {
+	        System.out.println("Liste des pièces pour cette réparation:");
+	        for (Piece p : listePieces) {
+	            System.out.println("Référence: " + p.getRef() + ", Nom: " + p.getNom() +
+	                               ", Quantité: " + p.getQuantite() + ", Prix: " + p.getPrix());
+	        }
+	    }
+
+
+}
+******************// la classe Piece //*******************************************
+package TP5;
+
+
+public class Piece {
+	private int ref;
+    private String nom;
+    private int quantite;
+    private static int quantiteStock;
+    private double prix;
+    
+    public Piece (int ref,String nom,int quantite,int quantiteStock, double prix) {
+    	this.ref = ref;
+        this.nom = nom;
+        this.quantite = quantite;
+        Piece.quantiteStock=quantiteStock;
+        this.prix = prix;
+    }
+    public 	Piece(int ref,String nom,int quantite,double prix) {
+    	this.ref = ref;
+        this.nom = nom;
+        this.quantite = quantite;
+        this.prix = prix;
+    }
+	public int getRef() {
+		return ref;
+	}
+	public void setRef(int ref) {
+		this.ref = ref;
+	}
+	public String getNom() {
+		return nom;
+	}
+	public void setNom(String nom) {
+		this.nom = nom;
+	}
+	public int getQuantite() {
+		return quantite;
+	}
+	public void setQuantite(int quantite) {
+		this.quantite = quantite;
+	}
+	public int getQuantiteStock() {
+		return quantiteStock;
+	}
+	
+	public double getPrix() {
+		return prix;
+	}
+	public void setPrix(double prix) {
+		this.prix = prix;
+	}
+	public boolean isDispo (String nom) {
+		if (this.nom.equals(nom) && (quantiteStock >0 ))
+			return true ;
+		else 
+			return false;
+	}
+	public void entrerStock (int quantite ) {
+		quantite= quantiteStock + quantite;
+		
+	}
+	public double calculerMontantPiece() {
+		return prix*quantiteStock;
+	}
+	public String toString() {
+		return("Référence: " + getRef() + ", Nom: " + getNom() +
+	                               ", Quantité: " + getQuantite() + ", Prix: " + getPrix());
+	        
+	}
+
+}
+*****************************// la classe main//**********************
+****************************// la classe Application//*****************
+package TP5;
+import java.time.LocalDate;
+import java .util.Date;
+public class ApllicationTp5 {
+
+	public static void main(String[] args) {
+		
+
+		Fournisseur mouhamed= new Fournisseur(50,"importante","hamiz",15);
+        Equipment equipment = new Equipment(5,"rue5", 5000,mouhamed,TypeEquipment.imprimante);
+        Technicien khaled = new Technicien(12514812,Specialité.Informatique);
+        Technicien samir = new Technicien(22251487,Specialité.Mecanique);
+        Atelier reparation = new Atelier (125, LocalDate.of(2009,05,15),LocalDate.of(2015,8,15));
+        Véhicule harbine = new Véhicule (1231528416,"harbine" ,khaled);
+        Piece piece1 = new Piece(1, "pc", 10,10, 100);
+        piece1.entrerStock(5);
+        
+        System.out.println("Les pc sont disponible : " + piece1.isDispo("pc"));
+
+        System.out.println("La quantité de la pièce " + piece1.getNom() + " après entrée en stock : " + piece1.getQuantite());
+        double montantTotal = piece1.calculerMontantPiece();
+        System.out.println("Le montant total de la pièce " + piece1.getNom() + " est : " + montantTotal + " DA");
+        
+        System.out.println("**************************************************************************************");
+        harbine.affiche();
+        System.out.println("************************************************************************") ;   
+        mouhamed.ajouterEquipment(equipment);
+        System.out.println("************************************************************************");
+        reparation.affiche();
+        System.out.println("**************************************************************************");
+       Date dateRep = new Date();
+        int nbHeure = 5;
+        String travaux = "Réparation générale";
+       Réparation reper = new Réparation(dateRep, nbHeure, travaux);
+      double prix= reper.calculerPrixRep(equipment);
+      System.out.println("Prix total de la réparation : " + prix + " DA");
+      reper.estRéformable(prix);
+      System.out.println("le piece est réformable "+reper.estRéformable(prix));
+	System.out.println("**************************************************************************");
+    khaled.DésignerChefatelier(khaled);
+    System.out.println("le chef equipe est :\n"+khaled.DésignerChefatelier());
+System.out.println("*****************************************************************************************");
+   
+
+
+}           
+	}
+
+
